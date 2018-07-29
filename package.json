@@ -1,0 +1,37 @@
+{
+  "name": "synapserl",
+  "version": "0.1.1",
+  "description": "Turn based roguelike fantasy tactic game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:start": "nodemon server_entry.js",
+    "client:start": "webpack --config webpack.config.js --watch",
+    "start": "npm-run-all --parallel server:start client:start"
+  },
+  "author": "Łukasz Lach",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-pug-plugin": "^0.3.0",
+    "koa": "^2.5.2",
+    "koa-pug": "^3.0.0-2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "less": "^3.8.0",
+    "less-loader": "^4.1.0",
+    "mvc-lc": "^0.1.2",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "rot-js": "^0.6.5",
+    "webpack": "^3.6.0"
+  }
+}
