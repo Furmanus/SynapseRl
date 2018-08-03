@@ -1,0 +1,44 @@
+.form {
+
+  &-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 2;
+    width: 100%;
+
+    form {
+      width: fit-content;
+    }
+  }
+  &-input {
+    width: 200px;
+    border-radius: 5px;
+
+    &:focus {
+      box-shadow: 1px 1px inset;
+    }
+
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 0;
+      overflow: hidden;
+    }
+  }
+  &-label {
+    margin-right: 2px;
+  }
+  &-error {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: red;
+    flex-grow: 2;
+
+    ul li{
+      list-style-type: none;
+    }
+  }
+}

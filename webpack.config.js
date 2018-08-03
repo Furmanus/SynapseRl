@@ -15,8 +15,15 @@ const plugins = [
     new ExtractTextPlugin('[name].[chunkhash].bundle.css'),
     new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'server/templates/login_template.pug'),
+        chunks: ['vendors', 'login'],
         filetype: 'pug',
         filename: 'login.pug'
+    }),
+    new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, 'server/templates/dashboard_template.pug'),
+        chunks: ['vendors', 'dashboard'],
+        filetype: 'pug',
+        filename: 'dashboard.pug'
     }),
     new HtmlWebpackPugPlugin()
 ];
