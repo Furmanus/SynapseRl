@@ -10,6 +10,7 @@ import {LoginForm} from '../components/LoginForm';
 import {RegisterForm} from '../components/RegisterForm';
 import {InfoComponent} from '../components/InfoComponent';
 import {ErrorComponent} from '../components/ErrorComponent';
+import {Loader} from '../../common/components/Loader';
 
 export class MainMenuWrapper extends React.Component {
     state = {
@@ -17,7 +18,8 @@ export class MainMenuWrapper extends React.Component {
         loginUser: '',
         registerUser: '',
         loginErrors: [],
-        registerErrors: []
+        registerErrors: [],
+        isLoadingData: false
     };
     @autobind
     onTabClick(ev) {
@@ -55,6 +57,18 @@ export class MainMenuWrapper extends React.Component {
             registerErrors
         });
     }
+    @autobind
+    onFetchDataStart() {
+        this.setState({
+            isLoadingData: true
+        });
+    }
+    @autobind
+    onFetchDataFinish() {
+        this.setState({
+            isLoadingData: false
+        });
+    }
     renderActiveTab() {
         const {
             activeTab,
@@ -67,12 +81,16 @@ export class MainMenuWrapper extends React.Component {
                 user={loginUser}
                 onUserChange={this.onLoginUserInputChange}
                 onErrorChange={this.onLoginErrorsChange}
+                onFetchDataStart={this.onFetchDataStart}
+                onFetchDataFinish={this.onFetchDataFinish}
             />;
         } else if (REGISTER_MENU_ITEM === activeTab) {
             return <RegisterForm
                 user={registerUser}
                 onUserChange={this.onRegisterUserInputChange}
                 onErrorChange={this.onRegisterErrorsChange}
+                onFetchDataStart={this.onFetchDataStart}
+                onFetchDataFinish={this.onFetchDataFinish}
             />
         } else if (INFO_MENU_ITEM === activeTab) {
             return <InfoComponent/>
@@ -82,7 +100,8 @@ export class MainMenuWrapper extends React.Component {
         const {
             loginErrors,
             registerErrors,
-            activeTab
+            activeTab,
+            isLoadingData
         } = this.state;
         let currentErrorsToDisplay;
 
@@ -93,12 +112,13 @@ export class MainMenuWrapper extends React.Component {
         }
 
         return (
-            <div className="menu-wrapper center">
+            <div className="menu-wrapper">
                 <MainMenuNavBar
                     activeTab={activeTab}
                     onTabClick={this.onTabClick}
                 />
                 {this.renderActiveTab()}
+                {isLoadingData ? <Loader/> : null}
                 <ErrorComponent errors={currentErrorsToDisplay}/>
             </div>
         );

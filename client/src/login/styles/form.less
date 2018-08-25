@@ -9,11 +9,18 @@
 
     form {
       width: fit-content;
+
+      div:nth-last-child(2) {
+        margin-bottom: 16px;
+      }
     }
   }
   &-input {
     width: 200px;
-    border-radius: 5px;
+    border-radius: 10px;
+    align-self: flex-end;
+    padding-left: 4px;
+    outline: none;
 
     &:focus {
       box-shadow: 1px 1px inset;

@@ -4,7 +4,9 @@
     "react"
   ],
   "plugins": [
+    "transform-object-rest-spread",
     "transform-decorators-legacy",
+    "transform-decorators",
     "babel-plugin-transform-class-properties"
   ]
 }

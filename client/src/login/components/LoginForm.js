@@ -3,30 +3,40 @@ import {Button} from '../../common/components/Button';
 import PropTypes from 'prop-types';
 import {LOGIN_PASSWORD_EMPTY, LOGIN_USER_EMPTY} from '../constants/errors';
 import autobind from 'autobind-decorator';
+import {FaExclamation} from 'react-icons/fa';
+import {fetchPostData} from '../../common/helpers/ajax_helper';
+import {Loader} from '../../common/components/Loader';
 
 export class LoginForm extends React.Component {
-    state = {
-        error: []
-    };
     static propTypes = {
         user: PropTypes.string,
         onUserChange: PropTypes.func,
-        onErrorChange: PropTypes.func
+        onErrorChange: PropTypes.func,
+        onFetchDataStart: PropTypes.func,
+        onFetchDataFinish: PropTypes.func
     };
     static defaultProps = {
         user: '',
         onUserChange: () => {},
-        onErrorChange: () => {}
+        onErrorChange: () => {},
+        onFetchDataStart: () => {},
+        onFetchDataFinish: () => {}
+    };
+    state = {
+        isLoadingData: false
     };
     @autobind
-    onFormSubmit(e) {
+    async onFormSubmit(e) {
         const form = e.target;
         const user = form.user.value;
         const password = form.password.value;
         const error = [];
         const {
-            onErrorChange
+            onErrorChange,
+            onFetchDataStart,
+            onFetchDataFinish
         } = this.props;
+        let loginAttemptResult;
 
         e.preventDefault();
 
@@ -36,7 +46,18 @@ export class LoginForm extends React.Component {
         onErrorChange(error);
 
         if (!error.length) {
-            // form.submit();
+            onFetchDataStart();
+
+            loginAttemptResult = await fetchPostData('/login_validation', {
+                user,
+                password
+            });
+
+            onFetchDataFinish();
+            if (loginAttemptResult.error) {
+                error.push(loginAttemptResult.error);
+                onErrorChange(error);
+            }
         }
     }
     renderError() {
@@ -47,11 +68,8 @@ export class LoginForm extends React.Component {
     render() {
         const {
             user,
-            onUserChange,
+            onUserChange
         } = this.props;
-        const {
-            error
-        } = this.state;
 
         return (
             <div className="form-wrapper">
@@ -59,6 +77,7 @@ export class LoginForm extends React.Component {
                     <div className="space-down form-input-wrapper">
                         <label className="form-label" htmlFor="user">User name: </label>
                         <input
+                            placeholder="enter user name"
                             type="text"
                             name="user"
                             id="user"
@@ -70,6 +89,7 @@ export class LoginForm extends React.Component {
                     <div className="space-down form-input-wrapper">
                         <label className="form-label" htmlFor="password">Password: </label>
                         <input
+                            placeholder="enter password"
                             type="password"
                             name="password"
                             id="password"

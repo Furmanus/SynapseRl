@@ -1,22 +1,29 @@
 const path = require('path');
-const Koa = require('koa');
-const app = new Koa();
-const Pug = require('koa-pug');
-const koaStatic = require('koa-static');
-const router = require('./server/router');
-const port = 5050 || process.env.PORT;
-const ENV = process.env.NODE_ENV;
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const mainRouter = require('./server/router');
+const loginRouter = require('./server/routes/login_routes');
+const dashboardRouter = require('./server/routes/dashboard_routes');
+const serverConfig = require('./server/config/config');
+const mainManager = require('./server/managers/main_manager');
+const port = process.env.PORT || 5050;
 
-const pug = new Pug({
-    viewPath: path.resolve(__dirname, 'client/dist'),
-    debug: ENV === 'development',
-    app: app
-});
+mainManager.initialize(io, app);
 
-app.use(koaStatic(path.resolve(__dirname, 'client/dist')));
-app.use(router.routes())
-    .use(router.allowedMethods());
+app.set('view engine', 'pug');
+app.set('views', path.resolve(__dirname, 'client/dist'));
 
-app.listen(port, () => {
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(express.static(path.resolve(__dirname, 'client/dist')));
+app.use(loginRouter);
+app.use(mainRouter);
+app.use(dashboardRouter);
+
+server.listen(port, () => {
     console.log(`Server is listening at port ${port}`);
 });

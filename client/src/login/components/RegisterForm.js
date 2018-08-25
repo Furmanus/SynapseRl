@@ -3,24 +3,27 @@ import {Button} from '../../common/components/Button';
 import PropTypes from 'prop-types';
 import {
     REGISTER_PASSWORD_EMPTY,
-    REGISTER_PASSWORD_REPEATED_NOT_EQUAL,
+    REGISTER_PASSWORD_REPEATED_NOT_EQUAL, REGISTER_USER_ALREADY_REGISTERED,
     REGISTER_USER_EMPTY
 } from '../constants/errors';
 import autobind from 'autobind-decorator';
+import {FaExclamation} from 'react-icons/fa';
+import {fetchFormData, fetchPostData, parseFormToObject} from '../../common/helpers/ajax_helper';
 
 export class RegisterForm extends React.Component {
-    state = {
-        error: []
-    };
     static propTypes = {
         user: PropTypes.string,
         onUserChange: PropTypes.func,
-        onErrorChange: PropTypes.func
+        onErrorChange: PropTypes.func,
+        onFetchDataStart: PropTypes.func,
+        onFetchDataFinish: PropTypes.func
     };
     static defaultProps = {
         user: '',
         onUserChange: () => {},
-        onErrorChange: () => {}
+        onErrorChange: () => {},
+        onFetchDataStart: () => {},
+        onFetchDataFinish: () => {}
     };
     renderError() {
         return this.state.error.map(item => {
@@ -28,15 +31,18 @@ export class RegisterForm extends React.Component {
         });
     }
     @autobind
-    onFormSubmit(e) {
+    async onFormSubmit(e) {
         const form = e.target;
         const user = form.user.value;
         const password = form.password.value;
         const repeatedPassword = form['repeat_password'].value;
         const error = [];
         const {
-            onErrorChange
+            onErrorChange,
+            onFetchDataStart,
+            onFetchDataFinish
         } = this.props;
+        let validationResult;
 
         e.preventDefault();
 
@@ -47,7 +53,19 @@ export class RegisterForm extends React.Component {
         onErrorChange(error);
 
         if (!error.length) {
-            //form.submit();
+            onFetchDataStart();
+
+            validationResult = await fetchPostData('register_validation', {
+                user
+            });
+            onFetchDataFinish();
+
+            if (validationResult.isUserFound) {
+                error.push(REGISTER_USER_ALREADY_REGISTERED);
+                onErrorChange(error);
+            } else {
+                form.submit();
+            }
         }
     }
     render() {
@@ -55,9 +73,6 @@ export class RegisterForm extends React.Component {
             user,
             onUserChange,
         } = this.props;
-        const {
-            error
-        } = this.state;
 
         return (
             <div className="form-wrapper" onSubmit={this.onFormSubmit}>
@@ -79,7 +94,8 @@ export class RegisterForm extends React.Component {
                             type="password"
                             name="password"
                             id="password"
-                            className="form-input"/>
+                            className="form-input"
+                        />
                     </div>
                     <div className="space-down form-input-wrapper">
                         <label className="form-label" htmlFor="repeat_password">Repeat: </label>

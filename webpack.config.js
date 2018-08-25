@@ -31,7 +31,8 @@ const plugins = [
 module.exports = {
     entry: {
         login: ['babel-polyfill', path.resolve(__dirname, 'client/src/login/login.js')],
-        vendors: ['rot-js', 'react', 'react-dom']
+        dashboard: ['babel-polyfill', path.resolve(__dirname, 'client/src/dashboard/dashboard.js')],
+        vendors: ['rot-js', 'react', 'react-dom', 'socket.io-client']
     },
     devtool: 'source-map',
     output: {
@@ -52,6 +53,13 @@ module.exports = {
                     use: ['css-loader', 'less-loader']
                 })
             },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
+            }
         ]
     },
     plugins
