@@ -37,6 +37,7 @@
     "mongodb": "^3.1.1",
     "mvc-lc": "^0.1.2",
     "observable-lc": "^1.0.3",
+    "observer-lc": "^1.0.1",
     "prop-types": "^15.6.2",
     "pug": "^2.0.3",
     "react": "^16.4.1",

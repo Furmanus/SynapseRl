@@ -38,20 +38,30 @@ class SessionManager extends Observable {
 
         this.publish(eventNames.CLIENT_LOGGED_IN, {
             user: username,
-            sessionId: id
+            id: id
         });
     }
     logoutUser(request) {
-        this.removeUser(request);
+        const {
+            id,
+            user
+        } = request.session;
+
+        this.removeUser(id, user);
 
         request.session.destroy();
     }
-    removeUser(request) {
-        const user = request.session.user;
+    removeUser(id, user) {
         const loggedUsers = this.loggedUsers;
 
-        if (user && loggedUsers.has(user)) {
-            loggedUsers.delete(user);
+        if (loggedUsers.has(id) && loggedUsers.get(id).username === user) {
+
+            loggedUsers.delete(id);
+
+            this.publish(eventNames.CLIENT_LOGGED_OUT, {
+                id,
+                user
+            });
         }
     }
     getLoggedUsers() {

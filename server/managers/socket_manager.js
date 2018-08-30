@@ -1,39 +1,42 @@
 const socketEvents = require('../constants/socket_events');
 const Observable = require('observable-lc');
+const logger = require('../utils/logger');
+const log = logger.logDevelopment;
 
 class SocketManager extends Observable {
     initialize(io) {
         this.io = io;
-        this.mapSocketIdToUser = new Map();
 
         this.attachEvents();
     }
     attachEvents() {
         this.io.on(socketEvents.CONNECTION, socket => {
+            log(`${socket.handshake.session.user} socket with socket id ${socket.id} connected`);
             this.publish(socketEvents.CONNECTION, {
                 socketId: socket.id
             });
 
-            socket.on(socketEvents.USER_DATA, this.onUserDataEvent.bind(this, socket.id));
-        });
-        this.io.on(socketEvents.DISCONNECTION, socket => {
-            this.publish(socketEvents.DISCONNECTION, {
-                socketId: socket.id
+            socket.on(socketEvents.DISCONNECTION, () => {
+                const {
+                    user,
+                    id
+                } = socket.handshake.session;
+
+                log(`${user} socket with socket id ${socket.id} disconnected`);
+                this.publish(socketEvents.DISCONNECTION, {
+                    id,
+                    user
+                });
             });
         });
     }
-    onUserDataEvent(socketId, data) {
-        const extendedData = {
-            ...data,
-            socketId
-        };
-        this.publish(socketEvents.USER_DATA, extendedData);
-        this.mapSocketIdToUser.set(data.username, socketId);
+    sendInfoAboutNewUser(data) {
+        log(`${data.user} enters game socket event emited.`);
+        this.io.emit(socketEvents.NEW_USER_LOGGED, data);
     }
-    sendInfoAboutNewUser(username) {
-        this.io.emit(socketEvents.NEW_USER_LOGGED, {
-            username
-        });
+    sendInfoAboutUserLeft(data) {
+        log(`${data.user} leaves game socket event emited.`);
+        this.io.emit(socketEvents.USER_LOGGED_OUT, data);
     }
 }
 

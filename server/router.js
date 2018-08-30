@@ -24,9 +24,9 @@ mainRouter.get('/login', (req, res) => {
     }
 });
 mainRouter.get('/logout', (req, res) => {
-    sessionManager.logoutUser(req);
-
     logRoute(req);
+
+    sessionManager.logoutUser(req);
 
     res.send({
         result: 'ok',

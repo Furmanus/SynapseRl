@@ -19,25 +19,26 @@ class MainManager extends Observable {
     attachEvents() {
         this.socketManager.subscribe(socketEvents.CONNECTION, this.onSocketConnection.bind(this));
         this.socketManager.subscribe(socketEvents.DISCONNECTION, this.onSocketDisconnection.bind(this));
-        this.socketManager.subscribe(socketEvents.USER_DATA, this.onSocketUserData.bind(this));
 
         this.sessionManager.subscribe(eventNames.CLIENT_LOGGED_IN, this.onUserLogin.bind(this));
+        this.sessionManager.subscribe(eventNames.CLIENT_LOGGED_OUT, this.onUserLogout.bind(this));
     }
     onSocketConnection(data) {
         // console.log(`socket ${data.socketId} connected`);
     }
     onSocketDisconnection(data) {
-        // console.log(`socket ${data.socketId} disconnected`);
-    }
-    onSocketUserData(data) {
-
-    }
-    onUserLogin(data) {
         const {
-            user
+            user,
+            id
         } = data;
 
-        this.socketManager.sendInfoAboutNewUser(user);
+        this.sessionManager.removeUser(id, user);
+    }
+    onUserLogin(data) {
+        this.socketManager.sendInfoAboutNewUser(data);
+    }
+    onUserLogout(data) {
+        this.socketManager.sendInfoAboutUserLeft(data);
     }
 }
 

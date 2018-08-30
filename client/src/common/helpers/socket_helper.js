@@ -4,10 +4,15 @@ import {
     CONNECTION,
     DISCONNECTION,
     NEW_USER_LOGGED,
-    USER_DATA
+    USER_LOGGED_OUT
 } from '../constants/socket_events';
+import {store} from '../../dashboard/dashboard';
+import {
+    onNewUserLogin,
+    onUserLogout
+} from '../../dashboard/actions/dashboardActions';
 
-class SocketHelper {
+class SocketHelper{
     constructor() {
         this.socket = io();
 
@@ -17,6 +22,7 @@ class SocketHelper {
         this.socket.on(CONNECTION, this.onConnect);
         this.socket.on(DISCONNECTION, this.onDisconnect);
         this.socket.on(NEW_USER_LOGGED, this.onNewUserConnection);
+        this.socket.on(USER_LOGGED_OUT, this.onUserDisconnection);
     }
     @autobind
     onConnect() {
@@ -28,7 +34,21 @@ class SocketHelper {
     }
     @autobind
     onNewUserConnection(data) {
-        console.log(data);
+        const {
+            user,
+            id
+        } = data;
+
+        store.dispatch(onNewUserLogin(id, user));
+    }
+    @autobind
+    onUserDisconnection(data) {
+        const {
+            user,
+            id
+        } = data;
+
+        store.dispatch(onUserLogout(id, user));
     }
     listenTo(event, callback) {
         this.socket.on(event, callback);
@@ -38,11 +58,6 @@ class SocketHelper {
     }
     stopListening(event) {
         this.socket.off(event);
-    }
-    emitUserData(username) {
-        this.socket.emit(USER_DATA, {
-            username
-        });
     }
 }
 

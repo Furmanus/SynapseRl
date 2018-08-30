@@ -1,16 +1,18 @@
 import {
-    FETCH_LOGGED_USERS_ERROR,
-    FETCH_LOGGED_USERS_START,
-    FETCH_LOGGED_USERS_SUCCESS,
-    LOGOUT,
-    LOGOUT_SUCCESS
+    ACTION_FETCH_LOGGED_USERS_ERROR,
+    ACTION_FETCH_LOGGED_USERS_START,
+    ACTION_FETCH_LOGGED_USERS_SUCCESS,
+    ACTION_LOGOUT,
+    ACTION_LOGOUT_SUCCESS,
+    ACTION_NEW_USER_LOGGED_IN,
+    ACTION_USER_LOGGED_OUT
 } from '../constants/actionTypes';
 import {fetchGetData} from '../../common/helpers/ajax_helper';
 
 export function logout () {
     return async dispatch => {
         dispatch({
-            type: LOGOUT
+            type: ACTION_LOGOUT
         });
 
         await fetchGetData('/logout');
@@ -20,7 +22,7 @@ export function logout () {
 export function fetchLoggedUsers () {
     return async dispatch => {
         dispatch({
-            type: FETCH_LOGGED_USERS_START
+            type: ACTION_FETCH_LOGGED_USERS_START
         });
 
         try {
@@ -34,24 +36,34 @@ export function fetchLoggedUsers () {
 }
 function fetchLoggedUsersSuccess (loggedUsers) {
     return {
-        type: FETCH_LOGGED_USERS_SUCCESS,
+        type: ACTION_FETCH_LOGGED_USERS_SUCCESS,
         loggedUsers
     }
 }
 function fetchLoggedUsersError (err) {
     return {
-        type: FETCH_LOGGED_USERS_ERROR,
+        type: ACTION_FETCH_LOGGED_USERS_ERROR,
         err
     }
 }
 function logoutSuccess () {
     window.location = '/login';
     return {
-        type: LOGOUT_SUCCESS
+        type: ACTION_LOGOUT_SUCCESS
     }
 }
-export function listenToNewUsersConnection () {
-    return dispatch => {
+export function onNewUserLogin(id, user) {
+    return {
+        type: ACTION_NEW_USER_LOGGED_IN,
+        id,
+        user
+    };
+}
 
+export function onUserLogout(id, user) {
+    return {
+        type: ACTION_USER_LOGGED_OUT,
+        id,
+        user
     };
 }
