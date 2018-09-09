@@ -3,3 +3,5 @@ export function sortLoggedUsers (loggedUsers) {
         return a.user > b.user;
     });
 }
+
+export const noop = () => undefined;

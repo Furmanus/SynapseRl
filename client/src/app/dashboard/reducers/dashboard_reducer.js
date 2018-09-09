@@ -1,20 +1,31 @@
 import {
+    ACTION_CREATE_GAME_SUCCESS,
     ACTION_FETCH_LOGGED_USERS_START,
     ACTION_FETCH_LOGGED_USERS_SUCCESS,
+    ACTION_FETCH_USER_GAMES,
+    ACTION_FETCH_USER_GAMES_FAILURE,
+    ACTION_FETCH_USER_GAMES_SUCCESS,
     ACTION_LOGOUT,
     ACTION_NEW_USER_LOGGED_IN,
+    ACTION_SELECT_GAME,
+    ACTION_SELECT_USER,
     ACTION_USER_LOGGED_OUT,
 } from '../constants/actionTypes';
 import {sortLoggedUsers} from '../utils/utils';
 
 const initialState = {
     loggedUsers: [],
-    isFetchingLoggedUsers: false
+    userGames: [],
+    isFetchingLoggedUsers: false,
+    isFetchingUserGames: false,
+    selectedUser: null,
+    selectedGame: null
 };
 
 export function dashboardReducer (state = initialState, action) {
     let user;
     let newLoggedUsers;
+    let newUserGames;
     let id;
 
     switch (action.type) {
@@ -53,6 +64,42 @@ export function dashboardReducer (state = initialState, action) {
             return {
                 ...state,
                 loggedUsers: sortLoggedUsers(newLoggedUsers)
+            };
+        case ACTION_SELECT_USER:
+            return {
+                ...state,
+                selectedUser: action.user,
+                selectedGame: null
+            };
+        case ACTION_SELECT_GAME:
+            return {
+                ...state,
+                selectedUser: null,
+                selectedGame: action.game
+            };
+        case ACTION_CREATE_GAME_SUCCESS:
+            newUserGames = Array.slice(state.userGames);
+            newUserGames.push(action.game);
+
+            return {
+                ...state,
+                userGames: newUserGames
+            };
+        case ACTION_FETCH_USER_GAMES:
+            return {
+                ...state,
+                isFetchingUserGames: true
+            };
+        case ACTION_FETCH_USER_GAMES_SUCCESS:
+            return {
+                ...state,
+                isFetchingUserGames: false,
+                userGames: action.userGames
+            };
+        case ACTION_FETCH_USER_GAMES_FAILURE:
+            return {
+                ...state,
+                isFetchingUserGames: false
             };
         default:
             return state;

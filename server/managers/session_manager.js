@@ -21,33 +21,38 @@ class SessionManager extends Observable {
         io.use(this.sharedSession);
     }
     isUserLogged(request) {
-        const sessionId = request.session.id;
+        const userId = request.session.userId;
 
-        return !!this.loggedUsers.get(sessionId);
+        return !!this.loggedUsers.get(userId);
     }
-    logUser(request, username) {
+    logUser(request, userData) {
         const {
             session,
         } = request;
-        const id = session.id;
+        const id = String(userData._id);
+        const name = userData.user;
 
-        session.user = username;
-        this.loggedUsers.set(id, {
-            username
-        });
+        session.user = name;
+        session.userId = id;
+
+        if (!this.loggedUsers.has(id)) {
+            this.loggedUsers.set(id, {
+                username: name
+            });
+        }
 
         this.publish(eventNames.CLIENT_LOGGED_IN, {
-            user: username,
-            id: id
+            user: name,
+            id
         });
     }
     logoutUser(request) {
         const {
-            id,
+            userId,
             user
         } = request.session;
 
-        this.removeUser(id, user);
+        this.removeUser(userId, user);
 
         request.session.destroy();
     }
@@ -89,6 +94,9 @@ class SessionManager extends Observable {
     }
     getUserName(request) {
         return request.session.user;
+    }
+    getUserId(request) {
+        return request.session.userId;
     }
 }
 

@@ -32,7 +32,7 @@ class SocketManager extends Observable {
     }
     sendInfoAboutNewUser(data) {
         log(`${data.user} enters game socket event emited.`);
-        this.io.emit(socketEvents.NEW_USER_LOGGED, data);
+        this.io.sockets.emit(socketEvents.NEW_USER_LOGGED, data);
     }
     sendInfoAboutUserLeft(data) {
         log(`${data.user} leaves game socket event emited.`);

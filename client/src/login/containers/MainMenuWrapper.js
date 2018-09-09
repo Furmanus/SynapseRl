@@ -118,7 +118,7 @@ export class MainMenuWrapper extends React.Component {
                     onTabClick={this.onTabClick}
                 />
                 {this.renderActiveTab()}
-                {isLoadingData ? <Loader/> : null}
+                {isLoadingData ? <Loader global={true}/> : null}
                 <ErrorComponent errors={currentErrorsToDisplay}/>
             </div>
         );

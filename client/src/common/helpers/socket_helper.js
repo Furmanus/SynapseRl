@@ -6,11 +6,11 @@ import {
     NEW_USER_LOGGED,
     USER_LOGGED_OUT
 } from '../constants/socket_events';
-import {store} from '../../dashboard/dashboard';
+import {store} from '../../app/app';
 import {
     onNewUserLogin,
     onUserLogout
-} from '../../dashboard/actions/dashboardActions';
+} from '../../app/dashboard/actions/dashboardActions';
 
 class SocketHelper{
     constructor() {
@@ -38,7 +38,7 @@ class SocketHelper{
             user,
             id
         } = data;
-
+        
         store.dispatch(onNewUserLogin(id, user));
     }
     @autobind

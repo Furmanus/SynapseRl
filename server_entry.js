@@ -20,6 +20,7 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.static(path.resolve(__dirname, 'client/dist')));
+app.use('/assets', express.static(path.resolve(__dirname, 'server/assets')));
 app.use(loginRouter);
 app.use(mainRouter);
 app.use(dashboardRouter);

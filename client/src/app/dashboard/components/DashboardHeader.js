@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button} from '../../common/components/Button';
+import {Button} from '../../../common/components/Button';
 
 export class DashboardHeader extends React.Component {
     static propTypes = {

@@ -33,7 +33,7 @@ loginRouter.post('/login_validation', async (req, res) => {
     }
 
     if (userData && isPasswordCorrect) {
-        sessionManager.logUser(req, user);
+        sessionManager.logUser(req, userData);
 
         res.send({
             redirect: `/dashboard`
@@ -55,10 +55,12 @@ loginRouter.post('/register', async (req, res) => {
 
     try {
         hashedPassword = await cryptoHelper.encrypt(password);
-        await DatabaseManager.insertNewUser(user_name, hashedPassword);
-        sessionManager.logUser(req, user_name);
+        const insertedUserData = await DatabaseManager.insertNewUser(user_name, hashedPassword);
+
+        sessionManager.logUser(req, insertedUserData.ops[0]);
         res.redirect(`/dashboard`);
     } catch (err) {
+        console.log(err);
         res.status(500).send({err});
     }
 });

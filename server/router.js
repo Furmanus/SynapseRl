@@ -12,12 +12,15 @@ mainRouter.get('/', (req, res) => {
 });
 mainRouter.get('/login', (req, res) => {
     const user = sessionManager.getUserName(req);
-    const sessionId = sessionManager.getSessionId(req);
+    const userId = sessionManager.getUserId(req);
 
     logRoute(req);
 
-    if (user && sessionId) {
-        sessionManager.logUser(user, sessionId);
+    if (user && userId) {
+        sessionManager.logUser(req, {
+            _id: userId,
+            user
+        });
         res.redirect('/dashboard');
     } else {
         res.render('login');
@@ -46,11 +49,13 @@ mainRouter.all('*', (req, res, next) => {
 });
 mainRouter.get('/dashboard', (req, res) => {
     const user = sessionManager.getUserName(req);
+    const userId = sessionManager.getUserId(req);
 
     logRoute(req);
 
     res.render('dashboard', {
-        user: user
+        user: user,
+        id: userId
     });
 });
 
