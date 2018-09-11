@@ -36,7 +36,7 @@ loginRouter.post('/login_validation', async (req, res) => {
         sessionManager.logUser(req, userData);
 
         res.send({
-            redirect: `/dashboard`
+            redirect: `/app`
         });
     } else {
         res.send({
@@ -58,7 +58,7 @@ loginRouter.post('/register', async (req, res) => {
         const insertedUserData = await DatabaseManager.insertNewUser(user_name, hashedPassword);
 
         sessionManager.logUser(req, insertedUserData.ops[0]);
-        res.redirect(`/dashboard`);
+        res.redirect(`/app`);
     } catch (err) {
         console.log(err);
         res.status(500).send({err});

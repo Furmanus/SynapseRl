@@ -13,4 +13,4 @@ export const ACTION_CREATE_GAME_FAILURE = 'action: create game failure';
 export const ACTION_FETCH_USER_GAMES = 'action: fetch user games';
 export const ACTION_FETCH_USER_GAMES_SUCCESS = 'action: fetch user games success';
 export const ACTION_FETCH_USER_GAMES_FAILURE = 'action: fetch user games failure';
-export const ACTION_NAVIGATE_TO_GAME = 'action: navigate to game';
+export const ACTION_SELECT_ACTIVE_GAME = 'action: select active game';

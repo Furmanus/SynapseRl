@@ -9,7 +9,7 @@ import {
     ACTION_FETCH_USER_GAMES_FAILURE,
     ACTION_FETCH_USER_GAMES_SUCCESS,
     ACTION_LOGOUT,
-    ACTION_LOGOUT_SUCCESS, ACTION_NAVIGATE_TO_GAME,
+    ACTION_LOGOUT_SUCCESS, ACTION_SELECT_ACTIVE_GAME,
     ACTION_NEW_USER_LOGGED_IN,
     ACTION_SELECT_GAME,
     ACTION_SELECT_USER,
@@ -148,9 +148,9 @@ export function selectGame (game) {
         game
     };
 }
-export function navigateToGame (gameId) {
+export function selectActiveGame (gameId) {
     return {
-        type: ACTION_NAVIGATE_TO_GAME,
-        game: gameId
+        type: ACTION_SELECT_ACTIVE_GAME,
+        gameId
     }
 }

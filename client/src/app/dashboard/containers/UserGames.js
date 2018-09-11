@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import autobind from 'autobind-decorator';
 import {
     fetchUserGames,
-    navigateToGame,
+    selectActiveGame,
     selectGame
 } from '../actions/dashboardActions';
 import {Loader} from '../../../common/components/Loader';
@@ -14,7 +14,8 @@ const mapStateToProps = state => {
     return {
         isFetchingUserGames: state.isFetchingUserGames,
         userGames: state.userGames,
-        selectedUser: state.selectedUser
+        selectedUser: state.selectedUser,
+        activeGameId: state.activeGameId
     };
 };
 
@@ -26,8 +27,8 @@ const mapDispatchToProps = dispatch => {
         selectGame: selectedGame => {
             dispatch(selectGame(selectedGame));
         },
-        navigateToGame: selectedGameId => {
-            dispatch(navigateToGame(selectedGameId));
+        selectActiveGame: selectedGameId => {
+            dispatch(selectActiveGame(selectedGameId));
         }
     }
 };
@@ -63,10 +64,10 @@ export class UserGamesList extends React.Component {
     @autobind
     handleGameItemDoubleClick(selectedGame) {
         const {
-            navigateToGame
+            selectActiveGame
         } = this.props;
 
-        navigateToGame(selectedGame._id);
+        selectActiveGame(selectedGame._id);
     }
     @autobind
     renderUserGamesListItem() {

@@ -21,7 +21,7 @@ mainRouter.get('/login', (req, res) => {
             _id: userId,
             user
         });
-        res.redirect('/dashboard');
+        res.redirect('/app');
     } else {
         res.render('login');
     }
@@ -47,13 +47,13 @@ mainRouter.all('*', (req, res, next) => {
         routingHelper.forceRedirect('/login', req, res);
     }
 });
-mainRouter.get('/dashboard', (req, res) => {
+mainRouter.get('/app', (req, res) => {
     const user = sessionManager.getUserName(req);
     const userId = sessionManager.getUserId(req);
 
     logRoute(req);
 
-    res.render('dashboard', {
+    res.render('app', {
         user: user,
         id: userId
     });

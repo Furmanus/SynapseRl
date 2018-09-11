@@ -6,8 +6,6 @@ import {connect} from 'react-redux';
 import {
     logout
 } from './actions/dashboardActions';
-import {Loader} from '../../common/components/Loader';
-import {socketHelper} from '../../common/helpers/socket_helper';
 import {UserGamesList} from './containers/UserGames';
 import {DashboardMainContent} from './containers/DashboardMainContent';
 

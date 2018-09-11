@@ -20,10 +20,10 @@ const plugins = [
         filename: 'login.pug'
     }),
     new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'server/templates/dashboard_template.pug'),
-        chunks: ['vendors', 'dashboard'],
+        template: path.resolve(__dirname, 'server/templates/app_template.pug'),
+        chunks: ['vendors', 'app'],
         filetype: 'pug',
-        filename: 'dashboard.pug'
+        filename: 'app.pug'
     }),
     new HtmlWebpackPugPlugin()
 ];
@@ -31,7 +31,7 @@ const plugins = [
 module.exports = {
     entry: {
         login: ['babel-polyfill', path.resolve(__dirname, 'client/src/login/login.js')],
-        dashboard: ['babel-polyfill', path.resolve(__dirname, 'client/src/app/app.js')],
+        app: ['babel-polyfill', path.resolve(__dirname, 'client/src/app/app.js')],
         vendors: ['rot-js', 'react', 'react-dom', 'socket.io-client']
     },
     devtool: 'source-map',

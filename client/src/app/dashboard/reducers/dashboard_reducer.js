@@ -6,7 +6,7 @@ import {
     ACTION_FETCH_USER_GAMES_FAILURE,
     ACTION_FETCH_USER_GAMES_SUCCESS,
     ACTION_LOGOUT,
-    ACTION_NEW_USER_LOGGED_IN,
+    ACTION_NEW_USER_LOGGED_IN, ACTION_SELECT_ACTIVE_GAME,
     ACTION_SELECT_GAME,
     ACTION_SELECT_USER,
     ACTION_USER_LOGGED_OUT,
@@ -19,7 +19,8 @@ const initialState = {
     isFetchingLoggedUsers: false,
     isFetchingUserGames: false,
     selectedUser: null,
-    selectedGame: null
+    selectedGame: null,
+    activeGameId: null
 };
 
 export function dashboardReducer (state = initialState, action) {
@@ -100,6 +101,11 @@ export function dashboardReducer (state = initialState, action) {
             return {
                 ...state,
                 isFetchingUserGames: false
+            };
+        case ACTION_SELECT_ACTIVE_GAME:
+            return {
+                ...state,
+                activeGameId: action.gameId
             };
         default:
             return state;
