@@ -11,12 +11,14 @@ import {AppContainer} from './root/AppContainer';
 const store = createStore(dashboardReducer, applyMiddleware(thunk));
 const appContainer = document.getElementById('app');
 const userName = appContainer.getAttribute('data-user');
+const userId = appContainer.getAttribute('data-userId');
 
 appContainer.removeAttribute('data-user');
+appContainer.removeAttribute('data-userId');
 
 ReactDOM.render(
     <Provider store={store}>
-        <AppContainer user={userName}/>
+        <AppContainer user={userName} userId={userId}/>
     </Provider>,
     appContainer
 );

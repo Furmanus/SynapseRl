@@ -4,16 +4,21 @@ import PropTypes from 'prop-types';
 export class MainGameboardContainer extends React.Component {
 
     static propTypes = {
-        gameId: PropTypes.string.isRequired
+        gameId: PropTypes.string.isRequired,
+        userId: PropTypes.string.isRequired
     };
 
     render() {
         const {
-            gameId
+            gameId,
+            userId
         } = this.props;
 
         return (
-            <div>TEST</div>
+            <div>
+                <div>Game Id: {gameId}</div>
+                <div>User Id: {userId}</div>
+            </div>
         );
     }
 }

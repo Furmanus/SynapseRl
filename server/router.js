@@ -55,7 +55,7 @@ mainRouter.get('/app', (req, res) => {
 
     res.render('app', {
         user: user,
-        id: userId
+        userId: userId
     });
 });
 

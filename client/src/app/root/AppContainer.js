@@ -15,7 +15,8 @@ export class AppContainer extends React.Component {
 
     static propTypes = {
         user: PropTypes.string.isRequired,
-        activeGameId: PropTypes.string
+        activeGameId: PropTypes.string,
+        userId: PropTypes.string.isRequired
     };
 
     static defaultProps = {
@@ -25,12 +26,13 @@ export class AppContainer extends React.Component {
     render() {
         const {
             user,
+            userId,
             activeGameId
         } = this.props;
 
         return (
             activeGameId ?
-                <MainGameboardContainer gameId={activeGameId}/> :
+                <MainGameboardContainer gameId={activeGameId} userId={userId}/> :
                 <MainDashboardContainer user={user}/>
         );
     }
